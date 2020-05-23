@@ -6,6 +6,7 @@ import AuthedBase from '@/views/AuthedBase.vue';
 import AuthRouter from '@/router/auth.router';
 import ProfileRouter from '@/router/profile/profile.router';
 import store from '@/store';
+import orgsRouter from './orgs/orgs.router';
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const routes: RouteConfig[] = [
     path: '/profile',
     component: AuthedBase,
     children: ProfileRouter,
+  },
+  {
+    path: '/orgs',
+    component: AuthedBase,
+    children: orgsRouter,
   },
 ];
 

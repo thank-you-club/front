@@ -6,6 +6,8 @@ import { IUser } from '@/models/User';
 import { updateUser } from '@/graphql/users';
 import { verifyDomain, addDomain } from '@/graphql/domains';
 import { login, register } from '@/graphql/auth';
+import { insertOrg, updateOrg, deleteOrg } from '@/graphql/orgs';
+import { updateTeam, insertTeam, deleteTeam } from '@/graphql/teams';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -61,6 +63,39 @@ export default new Vuex.Store({
     async register(context, user: IUser) {
       return await apollo.mutate({
         mutation: register(user),
+      });
+    },
+    async updateOrg(context, org) {
+      // trackEditTemplate(org);
+      return await apollo.mutate({
+        mutation: updateOrg(org),
+      });
+    },
+    async insertOrg(context, org) {
+      // trackInsertTemplate(org);
+      return await apollo.mutate({
+        mutation: insertOrg(org),
+      });
+    },
+    async deleteOrg(context, org) {
+      // trackInsertTemplate(org);
+      return await apollo.mutate({
+        mutation: deleteOrg(org),
+      });
+    },
+    async updateTeam(context, team) {
+      return await apollo.mutate({
+        mutation: updateTeam(team),
+      });
+    },
+    async insertTeam(context, team) {
+      return await apollo.mutate({
+        mutation: insertTeam(team),
+      });
+    },
+    async deleteTeam(context, team) {
+      return await apollo.mutate({
+        mutation: deleteTeam(team),
       });
     },
   },

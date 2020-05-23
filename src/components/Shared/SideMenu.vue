@@ -4,8 +4,13 @@
       Thank you to
     </p>
     <ul class="menu-list">
+      <li v-for="org in orgs" :key="org._id">
+        <router-link :to="{ name: 'teams', params: { orgId: org._id } }">
+          {{ org.name }}</router-link
+        >
+      </li>
       <li>
-        <router-link :to="{ name: 'orgs' }"
+        <router-link :to="{ name: 'new-org' }"
           ><i class="fa fa-plus-circle has-text-primary" /> Add Org</router-link
         >
       </li>
@@ -30,9 +35,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { IOrg } from '../../models/Org';
 @Component
 export default class Home extends Vue {
+  @Prop({
+    required: true,
+  })
+  public orgs!: IOrg[];
   public logout() {
     this.$store.commit('setUser', null);
     this.$store.commit('setToken', null);
