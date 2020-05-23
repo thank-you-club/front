@@ -27,35 +27,6 @@
     >
       <div class="navbar-end" @click="toggleNavbar">
         <router-link
-          class="navbar-item is-hidden-mobile"
-          :to="{ name: 'dashboard' }"
-          v-if="isLoggedIn"
-        >
-          Dashboard
-        </router-link>
-        <router-link
-          class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
-          :to="{ name: 'documents-form' }"
-          v-if="isLoggedIn && user.onBoardingStep > 0"
-        >
-          Generator
-        </router-link>
-        <router-link
-          class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
-          :to="{ name: 'templates' }"
-          v-if="isLoggedIn"
-        >
-          Templates
-        </router-link>
-        <router-link
-          class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
-          :to="{ name: 'integrations-drive' }"
-          v-if="isLoggedIn"
-        >
-          Integrations
-        </router-link>
-        <hr class="navbar-divider" />
-        <router-link
           class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
           :to="{ name: 'edit-profile' }"
           v-if="isLoggedIn"

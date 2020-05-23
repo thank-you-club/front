@@ -27,18 +27,9 @@ export default class Login extends Vue {
       this.$store.commit('setUser', data.data.login.user);
       this.$store.commit('setToken', data.data.login.token);
       // identify(data.data.login.user);
-      if (
-        data.data.login.user.onBoardingStep === 0 ||
-        typeof data.data.login.user.onBoardingStep === 'undefined'
-      ) {
-        this.$router.push({
-          name: 'template-explanation',
-        });
-      } else {
-        this.$router.push({
-          name: 'templates',
-        });
-      }
+      this.$router.push({
+        name: 'orgs',
+      });
     } catch (err) {
       alert('Wrong Email or Password');
       console.error(err);

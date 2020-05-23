@@ -53,7 +53,7 @@ export default class App extends Vue {
           this.$route.name === 'home')
       ) {
         this.$router.push({
-          name: 'templates',
+          name: 'orgs',
         });
       }
     } else if (
