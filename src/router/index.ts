@@ -1,6 +1,11 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+import Home from '@/views/Home.vue';
+import Base from '@/views/Base.vue';
+import AuthedBase from '@/views/AuthedBase.vue';
+import AuthRouter from '@/router/auth.router';
+import ProfileRouter from '@/router/profile/profile.router';
+import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -11,12 +16,21 @@ const routes: RouteConfig[] = [
     component: Home,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/auth',
+    component: Base,
+    children: AuthRouter,
+    beforeEnter: (to, from, next) => {
+      next(
+        store.getters.getUser && store.getters.getUser._id
+          ? { name: 'edit-profile' }
+          : undefined,
+      );
+    },
+  },
+  {
+    path: '/profile',
+    component: AuthedBase,
+    children: ProfileRouter,
   },
 ];
 
