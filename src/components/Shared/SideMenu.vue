@@ -1,7 +1,7 @@
 <template>
   <aside class="menu">
     <p class="menu-label">
-      Thank you to
+      Thanks you to
     </p>
     <ul class="menu-list">
       <li v-for="org in orgs" :key="org._id">

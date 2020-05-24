@@ -16,6 +16,9 @@ export const getTeamById = gql`
     query ($_id: ID!){
         team(_id: $_id) {
             ${defaultTeamsFields}
+            members {
+                _id,email,firstName,lastName
+            }
         }
     }
 `;

@@ -14,6 +14,16 @@
             <router-link
               class="button is-primary is-outlined"
               :to="{
+                name: 'members',
+                params: { teamId: team._id },
+              }"
+            >
+              <i class="fas fa-edit" />
+              <span class="is-hidden-mobile"> Members </span>
+            </router-link>
+            <router-link
+              class="button is-info is-outlined"
+              :to="{
                 name: 'edit-team',
                 params: { teamId: team._id },
               }"
