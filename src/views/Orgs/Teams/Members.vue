@@ -37,6 +37,18 @@
     <div class="column is-12 has-text-centered" v-if="isLoading">
       <spinner />
     </div>
+    <div class="column is-12">
+      <button
+        class="button is-primary is-pulled-right"
+        v-if="members.length > 0 && team.owner && team.owner._id === user._id"
+        @click.prevent="nextCycle"
+      >
+        Next cycle
+      </button>
+    </div>
+    <div class="column is-12">
+      {{ cycles }}
+    </div>
   </section>
 </template>
 <script lang="ts">
@@ -48,6 +60,8 @@ import { IUser } from '../../../models/User';
 import { ITeam } from '../../../models/Team';
 import { getOrgById } from '../../../graphql/orgs';
 import { IOrg } from '../../../models/Org';
+import { ICycle } from '../../../models/Cycle';
+import { getCycles } from '../../../graphql/cycle';
 
 @Component({
   components: {
@@ -57,6 +71,14 @@ import { IOrg } from '../../../models/Org';
   apollo: {
     team: {
       query: getTeamById,
+      loadingKey: 'isLoading',
+      skip: true,
+      watchLoading(isLoading) {
+        this.isLoading = isLoading;
+      },
+    },
+    cycles: {
+      query: getCycles,
       loadingKey: 'isLoading',
       skip: true,
       watchLoading(isLoading) {
@@ -75,6 +97,7 @@ export default class Members extends Vue {
   public isLoading: boolean = true;
   public API_URL = process.env.VUE_APP_API_URL;
   private team: ITeam = {};
+  private cycles: ICycle[] = [];
   private org: IOrg = {};
   private get user() {
     return this.$store.getters.getUser;
@@ -85,6 +108,12 @@ export default class Members extends Vue {
     });
     this.$apollo.queries.team.skip = false;
     this.$apollo.queries.team.refetch();
+
+    this.$apollo.queries.cycles.setVariables({
+      team: this.$route.params.teamId,
+    });
+    this.$apollo.queries.cycles.skip = false;
+    this.$apollo.queries.cycles.refetch();
   }
   public async deleteMember(member: IUser) {
     const promptInput = prompt('Are you sure? To confirm write DETELE');
@@ -94,12 +123,23 @@ export default class Members extends Vue {
     }
   }
   public async addMember() {
-    const promptInput = prompt("What's the email of your collegue?");
+    const promptInput = prompt('What\'s the email of your collegue?');
     await this.$store.dispatch('addMemberToOrgTeam', {
       email: promptInput,
       team: this.team,
     });
     await this.$apollo.queries.team.refetch();
+  }
+  public async nextCycle() {
+    const confirmation = confirm(
+      'Are you sure you want to start the next cycle?',
+    );
+    if (confirmation) {
+      this.isLoading = true;
+      await this.$store.dispatch('nextCycle', this.team);
+      await this.$apollo.queries.cycles.refetch();
+      this.isLoading = false;
+    }
   }
 }
 </script>
