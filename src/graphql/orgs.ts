@@ -16,6 +16,9 @@ export const getOrgById = gql`
     query ($_id: ID!){
         org(_id: $_id) {
             ${defaultOrgsFields}
+            members {
+                _id,firstName,lastName,email
+            }
         }
     }
 `;
