@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { ITeam } from '@/models/Team';
+import { IOrg } from '@/models/Org';
 const defaultTeamsFields = `
     _id,
     name
@@ -52,4 +53,35 @@ export const updateTeam = (team: ITeam) => {
             }
           }
       `;
+};
+
+export const addMemberToOrg = ({
+  email,
+  org,
+}: {
+  email: string;
+  org: IOrg;
+}) => {
+  return gql`
+        mutation {
+            addMemberToOrg(_id:"${org._id}",email:"${email}"){
+            _id
+            }
+        }
+    `;
+};
+export const addMemberToOrgTeam = ({
+  email,
+  team,
+}: {
+  email: string;
+  team: ITeam;
+}) => {
+  return gql`
+        mutation {
+            addMemberToOrgTeam(_id:"${team._id}",email:"${email}"){
+            _id
+            }
+        }
+    `;
 };

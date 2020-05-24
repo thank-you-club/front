@@ -34,17 +34,10 @@ export default class ProfileEdit extends Vue {
   public async submit(user: IUser) {
     try {
       this.isLoading = true;
-      const argumentUser: IUser = Object.assign({}, user);
-      delete argumentUser.password;
-      delete argumentUser.registeredAt;
-      delete argumentUser.plan;
-      // @ts-ignore
-      delete argumentUser.isActive;
-      delete argumentUser.paidAt;
-      delete argumentUser.wasDeactivatedAt;
-      delete argumentUser._id;
-      // @ts-ignore
-      delete argumentUser.__typename;
+      const argumentUser: IUser = Object.assign(
+        {},
+        { firstName: user.firstName, lastName: user.lastName },
+      );
       await this.$store.dispatch('updateUser', argumentUser);
       await this.$apollo.queries.me.refetch();
       // identify(this.me);

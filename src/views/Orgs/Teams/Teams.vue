@@ -1,17 +1,16 @@
 <template>
   <section class="columns is-multiline">
     <div class="column is-12">
-      <router-link :to="{ name: 'new-member' }">
-        <button
-          class="button is-primary is-pulled-right"
-          v-if="members.length > 0"
-        >
-          Add a Member
-        </button>
-      </router-link>
+      <button
+        class="button is-primary is-pulled-right"
+        v-if="members.length > 0"
+        @click.prevent="addMember"
+      >
+        Add a Member
+      </button>
     </div>
     <div class="column is-12" v-if="members.length > 0">
-      <member-table :users="members" @delete="deleteMember" />
+      <member-table :users="members" />
     </div>
     <div
       class="column is-12 has-text-centered has-margin-top"
@@ -119,6 +118,14 @@ export default class Teams extends Vue {
       await this.$store.dispatch('deleteTeam', team);
       await this.$apollo.queries.teams.refetch();
     }
+  }
+  public async addMember() {
+    const promptInput = prompt('What\'s the email of your collegue?');
+    await this.$store.dispatch('addMemberToOrg', {
+      email: promptInput,
+      org: this.org,
+    });
+    await this.$apollo.queries.org.refetch();
   }
 }
 </script>

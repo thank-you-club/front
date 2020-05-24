@@ -35,6 +35,8 @@ import Spinner from '@/components/Shared/Spinner.vue';
 import { getTeamById } from '../../../graphql/teams';
 import { IUser } from '../../../models/User';
 import { ITeam } from '../../../models/Team';
+import { getOrgById } from '../../../graphql/orgs';
+import { IOrg } from '../../../models/Org';
 
 @Component({
   components: {
@@ -62,12 +64,18 @@ export default class Members extends Vue {
   public isLoading: boolean = true;
   public API_URL = process.env.VUE_APP_API_URL;
   private team: ITeam = {};
+  private org: IOrg = {};
   public mounted() {
     this.$apollo.queries.team.setVariables({
       _id: this.$route.params.teamId,
     });
     this.$apollo.queries.team.skip = false;
     this.$apollo.queries.team.refetch();
+    this.$apollo.queries.org.setVariables({
+      _id: this.$route.params.orgId,
+    });
+    this.$apollo.queries.org.skip = false;
+    this.$apollo.queries.org.refetch();
   }
   public async deleteMember(member: IUser) {
     const promptInput = prompt('Are you sure? To confirm write DETELE');
@@ -75,6 +83,14 @@ export default class Members extends Vue {
       await this.$store.dispatch('deleteMember', member);
       await this.$apollo.queries.team.refetch();
     }
+  }
+  public async addMember() {
+    const promptInput = prompt('What\'s the email of your collegue?');
+    await this.$store.dispatch('addMemberToOrgTeam', {
+      email: promptInput,
+      team: this.team,
+    });
+    await this.$apollo.queries.org.refetch();
   }
 }
 </script>
