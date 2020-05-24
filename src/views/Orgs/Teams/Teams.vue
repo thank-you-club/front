@@ -1,32 +1,11 @@
 <template>
-  <section class="columns is-multiline">
+  <section class="columns is-multiline content">
+    <h2>Teams</h2>
     <div class="column is-12">
-      <button
-        class="button is-primary is-pulled-right"
-        v-if="members.length > 0"
-        @click.prevent="addMember"
+      <router-link
+        :to="{ name: 'new-team' }"
+        v-if="org.owner && org.owner._id === user._id"
       >
-        Add a Member
-      </button>
-    </div>
-    <div class="column is-12" v-if="members.length > 0">
-      <member-table :users="members" />
-    </div>
-    <div
-      class="column is-12 has-text-centered has-margin-top"
-      v-if="!isLoading && members.length === 0"
-    >
-      <p class="is-size-4">No members yet? No problem!</p>
-      <p class="is-size-5">Do it now!</p>
-      <router-link :to="{ name: 'new-member' }">
-        <button class="button is-primary has-margin-top">New Member</button>
-      </router-link>
-    </div>
-    <div class="column is-12 has-text-centered" v-if="isLoading">
-      <spinner />
-    </div>
-    <div class="column is-12">
-      <router-link :to="{ name: 'new-team' }">
         <button
           class="button is-primary is-pulled-right"
           v-if="teams.length > 0"
@@ -40,13 +19,52 @@
     </div>
     <div
       class="column is-12 has-text-centered has-margin-top"
-      v-if="!isLoading && teams.length === 0"
+      v-if="
+        !isLoading &&
+          teams.length === 0 &&
+          org.owner &&
+          org.owner._id === user._id
+      "
     >
       <p class="is-size-4">No teams yet? No problem!</p>
       <p class="is-size-5">Do it now!</p>
       <router-link :to="{ name: 'new-team' }">
         <button class="button is-primary has-margin-top">New Team</button>
       </router-link>
+    </div>
+    <div class="column is-12 has-text-centered" v-if="isLoading">
+      <spinner />
+    </div>
+    <h2>All Org members</h2>
+    <div class="column is-12">
+      <button
+        class="button is-primary is-pulled-right"
+        v-if="members.length > 0 && org.owner && org.owner._id === user._id"
+        @click.prevent="addMember"
+      >
+        Add a Member
+      </button>
+    </div>
+    <div class="column is-12" v-if="members.length > 0">
+      <member-table :users="members" :owner="org.owner" />
+    </div>
+    <div
+      class="column is-12 has-text-centered has-margin-top"
+      v-if="
+        !isLoading &&
+          members.length === 0 &&
+          org.owner &&
+          org.owner._id === user._id
+      "
+    >
+      <p class="is-size-4">No members yet? No problem!</p>
+      <p class="is-size-5">Do it now!</p>
+      <button
+        class="button is-primary has-margin-top"
+        @click.prevent="addMember"
+      >
+        New Member
+      </button>
     </div>
     <div class="column is-12 has-text-centered" v-if="isLoading">
       <spinner />
@@ -99,6 +117,9 @@ export default class Teams extends Vue {
       return this.org.members;
     }
     return [];
+  }
+  public get user() {
+    return this.$store.getters.getUser;
   }
   public mounted() {
     this.$apollo.queries.teams.setVariables({

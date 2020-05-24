@@ -10,6 +10,9 @@ export const getTeams = gql`
     query ($org: String){
         teams(org: $org) {
             ${defaultTeamsFields}
+            owner {
+              _id,email,firstName,lastName
+            }
         }
     }
 `;
@@ -18,7 +21,10 @@ export const getTeamById = gql`
         team(_id: $_id) {
             ${defaultTeamsFields}
             members {
-                _id,email,firstName,lastName
+              _id,email,firstName,lastName
+            }
+            owner {
+              _id,email,firstName,lastName
             }
         }
     }

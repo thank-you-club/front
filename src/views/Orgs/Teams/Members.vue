@@ -3,24 +3,36 @@
     <div class="column is-12">
       <button
         class="button is-primary is-pulled-right"
-        v-if="members.length > 0"
+        v-if="members.length > 0 && team.owner && team.owner._id === user._id"
         @click.prevent="addMember"
       >
         Add a Member
       </button>
     </div>
     <div class="column is-12" v-if="members.length > 0">
-      <member-table :users="members" @delete="deleteMember" />
+      <member-table
+        :users="members"
+        @delete="deleteMember"
+        :owner="team.owner"
+      />
     </div>
     <div
       class="column is-12 has-text-centered has-margin-top"
-      v-if="!isLoading && members.length === 0"
+      v-if="
+        !isLoading &&
+          members.length === 0 &&
+          team.owner &&
+          team.owner._id === user._id
+      "
     >
       <p class="is-size-4">No members yet? No problem!</p>
       <p class="is-size-5">Do it now!</p>
-      <router-link :to="{ name: 'new-member' }">
-        <button class="button is-primary has-margin-top">New Member</button>
-      </router-link>
+      <button
+        class="button is-primary has-margin-top"
+        @click.prevent="addMember"
+      >
+        New Member
+      </button>
     </div>
     <div class="column is-12 has-text-centered" v-if="isLoading">
       <spinner />
@@ -64,17 +76,15 @@ export default class Members extends Vue {
   public API_URL = process.env.VUE_APP_API_URL;
   private team: ITeam = {};
   private org: IOrg = {};
+  private get user() {
+    return this.$store.getters.getUser;
+  }
   public mounted() {
     this.$apollo.queries.team.setVariables({
       _id: this.$route.params.teamId,
     });
     this.$apollo.queries.team.skip = false;
     this.$apollo.queries.team.refetch();
-    this.$apollo.queries.org.setVariables({
-      _id: this.$route.params.orgId,
-    });
-    this.$apollo.queries.org.skip = false;
-    this.$apollo.queries.org.refetch();
   }
   public async deleteMember(member: IUser) {
     const promptInput = prompt('Are you sure? To confirm write DETELE');
@@ -84,7 +94,7 @@ export default class Members extends Vue {
     }
   }
   public async addMember() {
-    const promptInput = prompt('What\'s the email of your collegue?');
+    const promptInput = prompt("What's the email of your collegue?");
     await this.$store.dispatch('addMemberToOrgTeam', {
       email: promptInput,
       team: this.team,

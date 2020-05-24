@@ -3,17 +3,17 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Action</th>
+        <th v-if="owner._id === user._id">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="user in users" :key="user._id">
-        <td>{{ user.firstName }} {{ user.lastName }}</td>
-        <td>
+      <tr v-for="u in users" :key="u._id">
+        <td>{{ u.firstName }} {{ u.lastName }}</td>
+        <td v-if="owner._id === user._id">
           <div class="buttons">
             <button
               class="button is-danger is-outlined"
-              @click="$emit('remove', user)"
+              @click="$emit('remove', u)"
               target="blank"
             >
               <i class="fas fa-times" />
@@ -30,10 +30,17 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IUser } from '@/models/User';
 @Component
 export default class UserTable extends Vue {
+  private get user() {
+    return this.$store.getters.getUser;
+  }
   @Prop({
     required: true,
   })
   public users!: IUser[];
+  @Prop({
+    required: true,
+  })
+  public owner!: IUser[];
 }
 </script>
 

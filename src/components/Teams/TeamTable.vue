@@ -27,6 +27,7 @@
                 name: 'edit-team',
                 params: { teamId: team._id },
               }"
+              v-if="team.owner && team.owner._id === user._id"
             >
               <i class="fas fa-edit" />
               <span class="is-hidden-mobile"> Edit</span>
@@ -35,6 +36,7 @@
               class="button is-danger is-outlined"
               @click="$emit('delete', team)"
               target="blank"
+              v-if="team.owner && team.owner._id === user._id"
             >
               <i class="fas fa-times" />
               <span class="is-hidden-mobile"> Delete</span>
@@ -50,6 +52,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ITeam } from '@/models/Team';
 @Component
 export default class TeamTable extends Vue {
+  private get user() {
+    return this.$store.getters.getUser;
+  }
   @Prop({
     required: true,
   })

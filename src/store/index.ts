@@ -16,6 +16,7 @@ import {
 } from '@/graphql/teams';
 import { IOrg } from '@/models/Org';
 import { ITeam } from '@/models/Team';
+import { nextCycle } from '@/graphql/cycle';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -125,6 +126,11 @@ export default new Vuex.Store({
     ) {
       return await apollo.mutate({
         mutation: addMemberToOrgTeam({ email, team }),
+      });
+    },
+    async nextCycle(context, team: ITeam) {
+      return await apollo.mutate({
+        mutation: nextCycle(team),
       });
     },
   },
