@@ -7,7 +7,7 @@
   >
     <div class="navbar-brand">
       <a class="navbar-item" href="https://thank-you.club">
-        <img src="@/assets/logo.png" />
+        <!-- <img src="@/assets/logo.png" /> -->
       </a>
 
       <a
@@ -26,13 +26,6 @@
       :class="'navbar-menu '.concat(hasOpenMenu === true ? 'is-active' : '')"
     >
       <div class="navbar-end" @click="toggleNavbar">
-        <router-link
-          class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
-          :to="{ name: 'orgs' }"
-          v-if="isLoggedIn"
-        >
-          Orgs
-        </router-link>
         <router-link
           class="navbar-item is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen-only"
           :to="{ name: 'edit-profile' }"

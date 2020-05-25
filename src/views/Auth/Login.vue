@@ -28,7 +28,7 @@ export default class Login extends Vue {
       this.$store.commit('setToken', data.data.login.token);
       // identify(data.data.login.user);
       this.$router.push({
-        name: 'orgs',
+        name: 'profile',
       });
     } catch (err) {
       alert('Wrong Email or Password');

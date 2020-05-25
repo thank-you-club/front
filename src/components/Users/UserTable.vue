@@ -4,7 +4,7 @@
       <tr>
         <th>Name</th>
         <th v-if="transactions.length > 0">Points</th>
-        <th v-if="owner._id === user._id">Action</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -13,13 +13,13 @@
         <td v-if="transactions.length > 0">
           {{ userPoints(u) }}
         </td>
-        <td v-if="owner._id === user._id">
+        <td>
           <div class="buttons">
             <button
               class="button is-primary is-outlined"
               @click="$emit('endorse', u)"
               target="blank"
-              v-if="user._id !== u._id"
+              v-if="user._id !== u._id && transactions.length > 0"
             >
               <i class="fas fa-times" />
               <span class="is-hidden-mobile"> Endorse</span>
@@ -28,6 +28,7 @@
               class="button is-danger is-outlined"
               @click="$emit('remove', u)"
               target="blank"
+              v-if="owner._id === user._id"
             >
               <i class="fas fa-times" />
               <span class="is-hidden-mobile"> Remove</span>

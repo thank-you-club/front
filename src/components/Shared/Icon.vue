@@ -12,7 +12,7 @@ export default {
   props: {
     name: {},
     size: {
-      default: "normal",
+      default: 'normal',
     },
     modifier: {
       default: null,
@@ -61,7 +61,7 @@ symbol {
     fill: currentColor;
     stroke: none;
   }
-  *[d="M0 0h24v24H0z"] {
+  *[d='M0 0h24v24H0z'] {
     display: none;
   }
 }

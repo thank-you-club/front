@@ -2,7 +2,7 @@
   <section class="container">
     <div style="width:100%">
       <figure class="image is-128x128">
-        <img src="@/assets/logo.png" />
+        <!-- <img src="@/assets/logo.png" /> -->
       </figure>
     </div>
     <user-form
@@ -61,7 +61,8 @@ export default class Register extends Vue {
         err.graphQLErrors[0] &&
         err.graphQLErrors[0].message === '400'
       ) {
-        alert('This email adress doesn\'t exist');
+        // tslint:disable-next-line:quotemark
+        alert("This email adress doesn't exist");
       } else {
         alert('An error has occured please try again');
         console.error(err);

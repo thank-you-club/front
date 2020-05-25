@@ -1,5 +1,5 @@
 <template>
-  <section class="columns is-multiline">
+  <section class="columns is-multiline content">
     <div class="column is-12">
       <button
         class="button is-primary is-pulled-right"
@@ -40,6 +40,7 @@
       <spinner />
     </div>
     <div class="column is-12">
+      <h3>My points: {{ myPoints }}</h3>
       <button
         class="button is-primary is-pulled-right"
         v-if="members.length > 0 && team.owner && team.owner._id === user._id"
@@ -49,7 +50,14 @@
       </button>
     </div>
     <div class="column is-12">
-      {{ cycles }}
+      <div class="column is-12" v-for="c of cycles" :key="c._id">
+        <h5>{{ getCycleTitle(c) }}</h5>
+        <ul>
+          <li v-for="p of processedTransactions(c)" :key="p._id">
+            {{ p.target.firstName }} {{ p.target.lastName }}: {{ p.value }}
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -63,8 +71,9 @@ import { ITeam } from '../../../models/Team';
 import { getOrgById } from '../../../graphql/orgs';
 import { IOrg } from '../../../models/Org';
 import { ICycle } from '../../../models/Cycle';
+import { ITransaction } from '../../../models/Transaction';
 import { getCycles } from '../../../graphql/cycle';
-
+import * as moment from 'moment';
 @Component({
   components: {
     MemberTable,
@@ -111,6 +120,37 @@ export default class Members extends Vue {
         : null;
     return cycle ? cycle : { transactions: [] };
   }
+  public getCycleTitle(cycle: ICycle) {
+    return `${moment
+      .unix(cycle && cycle.startDate ? cycle.startDate : 0)
+      .format('MMMM, DD - YYYY ')}`;
+  }
+
+  public processedTransactions(cycle: ICycle): ITransaction[] {
+    const dict = cycle.transactions.reduce(
+      (p: { [key: string]: ITransaction }, c: ITransaction) => {
+        const id = c.target && c.target._id ? c.target._id : '-1';
+        if (!p[id]) {
+          p[id] = Object.assign({}, c);
+        } else {
+          p[id].value += c.value;
+        }
+        return p;
+      },
+      {},
+    );
+    return Object.values(dict).sort((a, b) => (a.value < b.value ? 1 : -1));
+  }
+
+  get myPoints(): number {
+    return (
+      1000 -
+      this.currentCycle.transactions
+        .filter((e: ITransaction) => e.issuer === this.user._id)
+        .reduce((p, c) => p + c.value, 0)
+    );
+  }
+
   public mounted() {
     this.$apollo.queries.team.setVariables({
       _id: this.$route.params.teamId,
@@ -132,7 +172,7 @@ export default class Members extends Vue {
     }
   }
   public async addMember() {
-    const promptInput = prompt('What\'s the email of your collegue?');
+    const promptInput = prompt('Got an email for me?');
     await this.$store.dispatch('addMemberToOrgTeam', {
       email: promptInput,
       team: this.team,

@@ -7,9 +7,11 @@ const defaultCyclesFields = `
     startDate,
     endDate,
     transactions{
-        value, target{
+        value
+        target{
          _id,firstName,lastName,email
         }
+        issuer
     }
 `;
 
