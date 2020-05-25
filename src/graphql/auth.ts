@@ -8,6 +8,7 @@ export const register = (user: IUser) => {
         email: "${user.email}",
         firstName: "${user.firstName}",
         lastName: "${user.lastName}",
+        photoUrl: "${user.photoUrl}",
         isAgreeingToTermsOfService: ${user.isAgreeingToTermsOfService},
         isSubscribedToNewsletter: ${user.isSubscribedToNewsletter},
         password: "${user.password}"){
