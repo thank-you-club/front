@@ -1,6 +1,14 @@
 <template>
   <section class="columns is-multiline content">
     <div class="column is-12">
+      <router-link :to="{ name: 'leaderboard' }">
+        <button
+          class="button is-primary is-pulled-right is-outlined"
+          v-if="members.length > 0"
+        >
+          Leaderboard
+        </button></router-link
+      >
       <button
         class="button is-primary is-pulled-right"
         v-if="members.length > 0 && team.owner && team.owner._id === user._id"
@@ -50,13 +58,13 @@
       </button>
     </div>
     <div class="column is-12">
-      <div class="column is-12" v-for="c of cycles" :key="c._id">
+      <div class="column is-12" v-for="c of processedCycles" :key="c._id">
         <h5>{{ getCycleTitle(c) }}</h5>
-        <ul>
+        <ol>
           <li v-for="p of processedTransactions(c)" :key="p._id">
             {{ p.target.firstName }} {{ p.target.lastName }}: {{ p.value }}
           </li>
-        </ul>
+        </ol>
       </div>
     </div>
   </section>
@@ -139,7 +147,14 @@ export default class Members extends Vue {
       },
       {},
     );
-    return Object.values(dict).sort((a, b) => (a.value < b.value ? 1 : -1));
+    return Object.values(dict)
+      .sort((a, b) => (a.value < b.value ? 1 : -1))
+      .filter((e) => e.value > 0);
+  }
+  get processedCycles(): ICycle[] {
+    return this.cycles.filter(
+      (e) => this.processedTransactions(e).reduce((p, c) => p + c.value, 0) > 0,
+    );
   }
 
   get myPoints(): number {
@@ -208,5 +223,9 @@ export default class Members extends Vue {
 <style lang="scss" scoped>
 .has-margin-top {
   margin-top: 48px;
+}
+.button {
+  margin-left: 8px;
+  margin-right: 8px;
 }
 </style>

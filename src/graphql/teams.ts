@@ -21,7 +21,7 @@ export const getTeamById = gql`
         team(_id: $_id) {
             ${defaultTeamsFields}
             members {
-              _id,email,firstName,lastName
+              _id,email,firstName,lastName,photoUrl
             }
             owner {
               _id,email,firstName,lastName

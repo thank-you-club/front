@@ -18,10 +18,7 @@
         ><i class="fab fa-youtube-square"
       /></a>
     </div> -->
-    <div
-      class="column is-12 has-text-centered has-background-white"
-      style="z-index: 10;"
-    >
+    <div class="column is-12 has-text-centered" style="z-index: 10;">
       Thank-you.club made with <i class="fa fa-heart has-text-danger" /> by
       Khaled Romdhane
       <!-- <a href="/privacy-policies">Privacy policies</a> |

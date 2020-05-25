@@ -2,6 +2,7 @@ import { Plans } from '@/constants/Plan';
 
 export interface IUser {
   _id?: string;
+  photoUrl?: string;
   firstName?: string;
   lastName?: string;
   email?: string;

@@ -40,6 +40,19 @@
         />
       </div>
     </div>
+    <div class="field">
+      <label class="label">Photo URL</label>
+      <div class="control">
+        <input
+          class="input"
+          name="photoUrl"
+          type="text"
+          v-model="user.photoUrl"
+          placeholder="Url for your photo (Use your slack photo)"
+          required
+        />
+      </div>
+    </div>
     <div class="field" v-if="hasPassword === true">
       <label class="label">Password</label>
       <div class="control">
@@ -111,7 +124,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IUser } from '@/models/User';
 @Component
 export default class UserForm extends Vue {
-
   get isConfirmationDiferent() {
     return this.user.password !== this.confirm && this.confirm.length > 0;
   }

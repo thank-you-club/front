@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { ITeam } from '@/models/Team';
-import { ICycle } from '@/models/Cycle';
 import { IUser } from '@/models/User';
 const defaultCyclesFields = `
     _id,
@@ -9,7 +8,7 @@ const defaultCyclesFields = `
     transactions{
         value
         target{
-         _id,firstName,lastName,email
+         _id,firstName,lastName,email,photoUrl
         }
         issuer
     }

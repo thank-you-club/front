@@ -8,6 +8,18 @@
         <router-link :to="{ name: 'teams', params: { orgId: org._id } }">
           {{ org.name }}</router-link
         >
+        <ul>
+          <li v-for="team in org.teams" :key="team._id">
+            <router-link
+              :to="{
+                name: 'members',
+                params: { orgId: org._id, teamId: team._id },
+              }"
+            >
+              {{ team.name }}</router-link
+            >
+          </li>
+        </ul>
       </li>
       <li>
         <router-link :to="{ name: 'new-org' }"

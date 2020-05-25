@@ -9,6 +9,9 @@ export const getOrgs = gql`
     query {
         orgs{
             ${defaultOrgsFields}
+            teams{
+                _id,name
+            }
         }
     }
 `;
@@ -20,7 +23,7 @@ export const getOrgById = gql`
                 _id,firstName,lastName,email
             }
             members {
-                _id,firstName,lastName,email
+                _id,firstName,lastName,email,photoUrl
             }
         }
     }
