@@ -14,6 +14,8 @@
         :users="members"
         @delete="deleteMember"
         :owner="team.owner"
+        :transactions="currentCycle.transactions"
+        @endorse="endorseMember"
       />
     </div>
     <div
@@ -102,6 +104,13 @@ export default class Members extends Vue {
   private get user() {
     return this.$store.getters.getUser;
   }
+  private get currentCycle() {
+    const cycle =
+      this.cycles && this.cycles.length > 0
+        ? this.cycles.find((e) => e.endDate === -1)
+        : null;
+    return cycle ? cycle : { transactions: [] };
+  }
   public mounted() {
     this.$apollo.queries.team.setVariables({
       _id: this.$route.params.teamId,
@@ -139,6 +148,18 @@ export default class Members extends Vue {
       await this.$store.dispatch('nextCycle', this.team);
       await this.$apollo.queries.cycles.refetch();
       this.isLoading = false;
+    }
+  }
+
+  public async endorseMember(member: IUser) {
+    const promptInput = prompt('How many points do you want to give?');
+    if (promptInput && parseInt(promptInput, 10) < 1000) {
+      await this.$store.dispatch('endorseMember', {
+        team: this.team,
+        member,
+        value: parseInt(promptInput, 10),
+      });
+      await this.$apollo.queries.team.refetch();
     }
   }
 }

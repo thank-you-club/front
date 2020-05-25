@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { upload } from '@/services/upload.service';
+// import { upload } from '@/services/upload.service';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { AxiosResponse, AxiosError } from 'axios';
 @Component
@@ -70,18 +70,18 @@ export default class FileUpload extends Vue {
     }
   }
   public save(formData: FormData) {
-    upload(formData)
-      .then((x: AxiosResponse) => {
-        this.$emit('uploaded', {
-          url: x.data.url,
-          originalFileName: x.data.originalFileName,
-        });
-        this.isLoading = false;
-      })
-      .catch((err: AxiosError) => {
-        console.error(err);
-        alert('Une erreur s\'est produite');
-      });
+    // upload(formData)
+    //   .then((x: AxiosResponse) => {
+    //     this.$emit('uploaded', {
+    //       url: x.data.url,
+    //       originalFileName: x.data.originalFileName,
+    //     });
+    //     this.isLoading = false;
+    //   })
+    //   .catch((err: AxiosError) => {
+    //     console.error(err);
+    //     alert("Une erreur s'est produite");
+    //   });
   }
 }
 </script>

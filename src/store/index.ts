@@ -16,7 +16,8 @@ import {
 } from '@/graphql/teams';
 import { IOrg } from '@/models/Org';
 import { ITeam } from '@/models/Team';
-import { nextCycle } from '@/graphql/cycle';
+import { nextCycle, endorseMember } from '@/graphql/cycle';
+import { ICycle } from '@/models/Cycle';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -131,6 +132,14 @@ export default new Vuex.Store({
     async nextCycle(context, team: ITeam) {
       return await apollo.mutate({
         mutation: nextCycle(team),
+      });
+    },
+    async endorseMember(
+      context,
+      { member, team, value }: { member: IUser; team: ITeam; value: number },
+    ) {
+      return await apollo.mutate({
+        mutation: endorseMember(team, member, value),
       });
     },
   },

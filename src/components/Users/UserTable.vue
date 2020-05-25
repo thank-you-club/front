@@ -3,14 +3,27 @@
     <thead>
       <tr>
         <th>Name</th>
+        <th v-if="transactions.length > 0">Points</th>
         <th v-if="owner._id === user._id">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="u in users" :key="u._id">
         <td>{{ u.firstName }} {{ u.lastName }}</td>
+        <td v-if="transactions.length > 0">
+          {{ userPoints(u) }}
+        </td>
         <td v-if="owner._id === user._id">
           <div class="buttons">
+            <button
+              class="button is-primary is-outlined"
+              @click="$emit('endorse', u)"
+              target="blank"
+              v-if="user._id !== u._id"
+            >
+              <i class="fas fa-times" />
+              <span class="is-hidden-mobile"> Endorse</span>
+            </button>
             <button
               class="button is-danger is-outlined"
               @click="$emit('remove', u)"
@@ -28,6 +41,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IUser } from '@/models/User';
+import { ITransaction } from '@/models/Transaction';
 @Component
 export default class UserTable extends Vue {
   private get user() {
@@ -41,6 +55,17 @@ export default class UserTable extends Vue {
     required: true,
   })
   public owner!: IUser[];
+  @Prop({
+    required: false,
+    default: [],
+  })
+  public transactions!: ITransaction[];
+
+  public userPoints(user: IUser): number {
+    return this.transactions
+      .filter((e) => e.target && e.target._id === user._id)
+      .reduce((p, c) => p + (c.value ? c.value : 0), 0);
+  }
 }
 </script>
 

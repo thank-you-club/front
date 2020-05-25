@@ -7,7 +7,9 @@ const defaultCyclesFields = `
     startDate,
     endDate,
     transactions{
-        value, target
+        value, target{
+         _id,firstName,lastName,email
+        }
     }
 `;
 
@@ -36,10 +38,10 @@ export const nextCycle = (team: ITeam) => {
       `;
 };
 
-export const endorseMember = (cycle: ICycle, member: IUser, value: number) => {
+export const endorseMember = (team: ITeam, member: IUser, value: number) => {
   return gql`
             mutation {
-              nextCycle(cycle: "${cycle._id}",target:"${member._id}",value:${value}){
+                endorseMember(team: "${team._id}",target:"${member._id}",value:${value}){
                     ${defaultCyclesFields}
                 }
             }
