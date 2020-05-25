@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start":"node production.js",
+    "start": "node production.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -16,6 +16,7 @@
     "express-force-https": "^1.0.0",
     "graphql": "^15.0.0",
     "moment": "^2.26.0",
+    "pm2": "^4.4.0",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.3",
