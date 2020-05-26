@@ -19,7 +19,7 @@
               class="button is-primary is-outlined"
               @click="$emit('endorse', u)"
               target="blank"
-              v-if="user._id !== u._id && transactions.length > 0"
+              v-if="user._id !== u._id"
             >
               <i class="fas fa-times" />
               <span class="is-hidden-mobile"> Endorse</span>
