@@ -15,8 +15,8 @@ const defaultCyclesFields = `
 `;
 
 export const getCycles = gql`
-    query {
-        cycles{
+    query ($team: String!){
+        cycles(team: $team){
             ${defaultCyclesFields}
         }
     }

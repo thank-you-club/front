@@ -47,7 +47,7 @@ export default class Register extends Vue {
       this.$store.commit('setToken', data.data.register.token);
       // identify(data.data.register.user);
       this.$router.push({
-        name: 'template-explanation',
+        name: 'profile',
       });
     } catch (err) {
       if (
