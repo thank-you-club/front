@@ -208,7 +208,11 @@ export default class Members extends Vue {
 
   public async endorseMember(member: IUser) {
     const promptInput = prompt('How many points do you want to give?');
-    if (promptInput && parseInt(promptInput, 10) < 1000) {
+    if (
+      promptInput &&
+      parseInt(promptInput, 10) < 1000 &&
+      parseInt(promptInput, 10) > 0
+    ) {
       await this.$store.dispatch('endorseMember', {
         team: this.team,
         member,
