@@ -21,7 +21,7 @@
               target="blank"
               v-if="user._id !== u._id"
             >
-              <i class="fas fa-times" />
+              <i class="fas fa-plus-circle" />
               <span class="is-hidden-mobile"> Endorse</span>
             </button>
             <button

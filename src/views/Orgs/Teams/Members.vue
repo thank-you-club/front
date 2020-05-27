@@ -62,7 +62,9 @@
         <h5>{{ getCycleTitle(c) }}</h5>
         <ol>
           <li v-for="p of processedTransactions(c)" :key="p._id">
-            {{ p.target.firstName }} {{ p.target.lastName }}: {{ p.value }}
+            {{ p.target.firstName }}
+            {{ p.target.lastName }}:
+            {{ p.value }}
           </li>
         </ol>
       </div>
@@ -149,7 +151,7 @@ export default class Members extends Vue {
     );
     return Object.values(dict)
       .sort((a, b) => (a.value < b.value ? 1 : -1))
-      .filter((e) => e.value > 0);
+      .filter((e) => e.value > 0 && e.target !== null);
   }
   get processedCycles(): ICycle[] {
     return this.cycles.filter(
@@ -166,7 +168,7 @@ export default class Members extends Vue {
     );
   }
 
-  public mounted() {
+  public async mounted() {
     this.$apollo.queries.team.setVariables({
       _id: this.$route.params.teamId,
     });
@@ -177,7 +179,7 @@ export default class Members extends Vue {
       team: this.$route.params.teamId,
     });
     this.$apollo.queries.cycles.skip = false;
-    this.$apollo.queries.cycles.refetch();
+    await this.$apollo.queries.cycles.refetch();
   }
   public async deleteMember(member: IUser) {
     const promptInput = prompt('Are you sure? To confirm write DETELE');

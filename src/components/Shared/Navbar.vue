@@ -58,7 +58,7 @@
               >Login</router-link
             >
             <router-link
-              class="button is-primary is-outlined"
+              class="button is-info"
               :to="{ name: 'register' }"
               v-if="!isLoggedIn"
               >Register</router-link
